@@ -7,7 +7,13 @@ window.onload = function () {
   loadingCell.setAttribute("colspan", "2");
   loadingCell.textContent = "Loading...";
   loadingRow.appendChild(loadingCell);
-  outputElement.appendChild(loadingRow);
+
+  // Get a reference to the 'loading' element
+  const loadingElement = document.getElementById("loading");
+
+  // Append the loading row to the 'loading' element
+  loadingElement.appendChild(loadingRow);
+
 
   // Record the overall start time
   const startTime = Date.now();
