@@ -16,7 +16,7 @@ window.onload = function () {
 
   // Function to create a promise
   function createPromise(i) {
-    const delay = Math.floor(Math.random() * 2000) + 1000; // Between 1 and 3 seconds
+    const delay = Math.floor(Math.random() * 1000) + 500; // Between 1 and 3 seconds
     const promiseStartTime = Date.now();
 
     return new Promise((resolve) => {
