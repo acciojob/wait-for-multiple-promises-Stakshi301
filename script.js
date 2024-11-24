@@ -1,15 +1,8 @@
 window.onload = function () {
   const outputElement = document.getElementById("output");
 
-  // Insert the loading row
-  const loadingRow = document.createElement("tr");
-  const loadingCell = document.createElement("td");
-  loadingCell.setAttribute("colspan", "2");
-  loadingCell.textContent = "Loading...";
-  loadingRow.appendChild(loadingCell);
-
-  // Append the loading row to the 'output' element
-  outputElement.appendChild(loadingRow);
+  // Insert the loading text directly into #output
+  outputElement.textContent = "Loading...";
 
   // Record the overall start time
   const startTime = Date.now();
@@ -34,45 +27,46 @@ window.onload = function () {
   }
 
   // Wait for all promises to resolve
-  Promise.all(promises).then((results) => {
-    const endTime = Date.now();
-    const totalTime = (endTime - startTime) / 1000; // In seconds
+  Promise.all(promises)
+    .then((results) => {
+      const endTime = Date.now();
+      const totalTime = (endTime - startTime) / 1000; // In seconds
 
-    // Remove the loading row
-    outputElement.removeChild(loadingRow);
+      // Clear the loading text
+      outputElement.textContent = "";
 
-    // Sort results by promise name
-    results.sort((a, b) => a.name.localeCompare(b.name));
+      // Sort results by promise name
+      results.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Add rows for each promise
-    results.forEach((result) => {
-      const row = document.createElement("tr");
+      // Add rows for each promise
+      results.forEach((result) => {
+        const row = document.createElement("tr");
 
-      const nameCell = document.createElement("td");
-      nameCell.textContent = result.name;
-      row.appendChild(nameCell);
+        const nameCell = document.createElement("td");
+        nameCell.textContent = result.name;
+        row.appendChild(nameCell);
 
-      const timeCell = document.createElement("td");
-      timeCell.textContent = result.timeTaken;
-      row.appendChild(timeCell);
+        const timeCell = document.createElement("td");
+        timeCell.textContent = result.timeTaken;
+        row.appendChild(timeCell);
 
-      outputElement.appendChild(row);
+        outputElement.appendChild(row);
+      });
+
+      // Add the total row
+      const totalRow = document.createElement("tr");
+
+      const totalNameCell = document.createElement("td");
+      totalNameCell.textContent = "Total";
+      totalRow.appendChild(totalNameCell);
+
+      const totalTimeCell = document.createElement("td");
+      totalTimeCell.textContent = totalTime.toFixed(3);
+      totalRow.appendChild(totalTimeCell);
+
+      outputElement.appendChild(totalRow);
+    })
+    .catch((error) => {
+      console.error("A promise was rejected: ", error);
     });
-
-    // Add the total row
-    const totalRow = document.createElement("tr");
-
-    const totalNameCell = document.createElement("td");
-    totalNameCell.textContent = "Total";
-    totalRow.appendChild(totalNameCell);
-
-    const totalTimeCell = document.createElement("td");
-    totalTimeCell.textContent = totalTime.toFixed(3);
-    totalRow.appendChild(totalTimeCell);
-
-    outputElement.appendChild(totalRow);
-  })
-  .catch((error) => {
-    console.error("A promise was rejected: ", error);
-  });
 };
