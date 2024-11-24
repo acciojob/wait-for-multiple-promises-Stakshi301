@@ -14,7 +14,6 @@ window.onload = function () {
   // Append the loading row to the 'loading' element
   loadingElement.appendChild(loadingRow);
 
-
   // Record the overall start time
   const startTime = Date.now();
 
@@ -75,5 +74,8 @@ window.onload = function () {
     totalRow.appendChild(totalTimeCell);
 
     outputElement.appendChild(totalRow);
+  })
+  .catch((error) => {
+    console.error("A promise was rejected: ", error);
   });
 };
