@@ -8,18 +8,15 @@ window.onload = function () {
   loadingCell.textContent = "Loading...";
   loadingRow.appendChild(loadingCell);
 
-  // Get a reference to the 'loading' element
-  const loadingElement = document.getElementById("loading");
-
-  // Append the loading row to the 'loading' element
-  loadingElement.appendChild(loadingRow);
+  // Append the loading row to the 'output' element
+  outputElement.appendChild(loadingRow);
 
   // Record the overall start time
   const startTime = Date.now();
 
   // Function to create a promise
   function createPromise(i) {
-    const delay = Math.floor(Math.random() * 1000) + 500; // Between 1 and 3 seconds
+    const delay = Math.floor(Math.random() * 2000) + 1000; // Between 1 and 3 seconds
     const promiseStartTime = Date.now();
 
     return new Promise((resolve) => {
