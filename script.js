@@ -17,29 +17,34 @@ function handlePromises() {
   const startTime = performance.now(); // Start time for total duration calculation
 
   // Use Promise.all to wait for all promises to resolve
-  Promise.all(promises).then((results) => {
-    const endTime = performance.now(); // End time for total duration calculation
-    const totalDuration = ((endTime - startTime) / 1000).toFixed(3);
+  Promise.all(promises)
+    .then((results) => {
+      const endTime = performance.now(); // End time for total duration calculation
+      const totalDuration = ((endTime - startTime) / 1000).toFixed(3);
 
-    // Remove the loading row
-    table.deleteRow(0);
+      // Remove the loading row
+      table.deleteRow(0);
 
-    // Add rows for each promise result
-    results.forEach((result) => {
-      const row = table.insertRow();
-      const cell1 = row.insertCell(0);
-      const cell2 = row.insertCell(1);
-      cell1.textContent = result.index;
-      cell2.textContent = `${result.time} seconds`;
+      // Add rows for each promise result
+      results.forEach((result) => {
+        const row = table.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        cell1.textContent = result.index;
+        cell2.textContent = `${result.time} seconds`;
+      });
+
+      // Add row for total duration
+      const totalRow = table.insertRow();
+      const totalCell1 = totalRow.insertCell(0);
+      const totalCell2 = totalRow.insertCell(1);
+      totalCell1.textContent = 'Total';
+      totalCell2.textContent = `${totalDuration} seconds`;
+    })
+    .catch((error) => {
+      console.error('Error handling promises:', error);
+      loadingRow.textContent = 'Error loading data';
     });
-
-    // Add row for total duration
-    const totalRow = table.insertRow();
-    const totalCell1 = totalRow.insertCell(0);
-    const totalCell2 = totalRow.insertCell(1);
-    totalCell1.textContent = 'Total';
-    totalCell2.textContent = `${totalDuration} seconds`;
-  });
 }
 
 // Call the function to handle promises

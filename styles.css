@@ -1,29 +1,32 @@
-/*  your css code here. If applicable */
 body {
   font-family: Arial, sans-serif;
   background-color: #f8f9fa;
+  padding: 20px;
 }
 
-
 .container {
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
+  text-align: center;
 }
 
 h2 {
-  text-align: center;
+  margin-bottom: 20px;
   color: #333;
 }
 
 .table {
-  margin-top: 20px;
+  margin: 20px auto;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 td {
   text-align: center;
+  padding: 8px;
 }
 
 .loading {
   font-style: italic;
-  color: gray;
+  color: #6c757d;
 }
