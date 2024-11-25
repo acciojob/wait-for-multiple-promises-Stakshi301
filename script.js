@@ -8,7 +8,7 @@ function createRandomPromise(index) {
 
 // Function to handle promises and update the table
 function handlePromises() {
-  const table = document.getElementById('promiseTable');
+  const tbody = document.getElementById('output');
   const loadingRow = document.getElementById('loadingRow');
 
   // Create three promises
@@ -23,23 +23,29 @@ function handlePromises() {
       const totalDuration = ((endTime - startTime) / 1000).toFixed(3);
 
       // Remove the loading row
-      table.deleteRow(0);
+      loadingRow.remove();
 
       // Add rows for each promise result
       results.forEach((result) => {
-        const row = table.insertRow();
-        const cell1 = row.insertCell(0);
-        const cell2 = row.insertCell(1);
+        const row = document.createElement('tr');
+        const cell1 = document.createElement('td');
+        const cell2 = document.createElement('td');
         cell1.textContent = result.index;
         cell2.textContent = `${result.time} seconds`;
+        row.appendChild(cell1);
+        row.appendChild(cell2);
+        tbody.appendChild(row);
       });
 
       // Add row for total duration
-      const totalRow = table.insertRow();
-      const totalCell1 = totalRow.insertCell(0);
-      const totalCell2 = totalRow.insertCell(1);
+      const totalRow = document.createElement('tr');
+      const totalCell1 = document.createElement('td');
+      const totalCell2 = document.createElement('td');
       totalCell1.textContent = 'Total';
       totalCell2.textContent = `${totalDuration} seconds`;
+      totalRow.appendChild(totalCell1);
+      totalRow.appendChild(totalCell2);
+      tbody.appendChild(totalRow);
     })
     .catch((error) => {
       console.error('Error handling promises:', error);
