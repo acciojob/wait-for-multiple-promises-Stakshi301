@@ -2,7 +2,13 @@ window.onload = function () {
   const outputElement = document.getElementById("output");
 
   // Insert the loading text directly into #output
-  outputElement.textContent = "Loading...";
+ const loadingRow = document.createElement("tr");
+	loadingRow.id = "loadingRow";
+const loadingCell = document.createElement("td");
+loadingCell.colSpan = 2; // Span across 2 columns
+loadingCell.textContent = "Loading...";
+loadingRow.appendChild(loadingCell);
+outputElement.appendChild(loadingRow);
 
   // Record the overall start time
   const startTime = Date.now();
@@ -33,8 +39,8 @@ window.onload = function () {
       const totalTime = (endTime - startTime) / 1000; // In seconds
 
       // Clear the loading text
-      outputElement.textContent = "";
-
+document.getElementById("loadingRow").remove(); 
+		
       // Sort results by promise name
       results.sort((a, b) => a.name.localeCompare(b.name));
 
