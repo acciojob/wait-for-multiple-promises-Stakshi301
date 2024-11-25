@@ -1,78 +1,46 @@
-window.onload = function () {
-  const outputElement = document.getElementById("output");
+// Helper function to create a promise that resolves after a random time between 1 and 3 seconds
+function createRandomPromise(index) {
+  const time = Math.random() * 2 + 1; // Random time between 1 and 3 seconds
+  return new Promise((resolve) => {
+    setTimeout(() => resolve({ index: `Promise ${index}`, time: time.toFixed(3) }), time * 1000);
+  });
+}
 
-  // Insert the loading text directly into #output
- const loadingRow = document.createElement("tr");
-	loadingRow.id = "loadingRow";
-const loadingCell = document.createElement("td");
-loadingCell.colSpan = 2; // Span across 2 columns
-loadingCell.textContent = "Loading...";
-loadingRow.appendChild(loadingCell);
-outputElement.appendChild(loadingRow);
+// Function to handle promises and update the table
+function handlePromises() {
+  const table = document.getElementById('promiseTable');
+  const loadingRow = document.getElementById('loadingRow');
 
-  // Record the overall start time
-  const startTime = Date.now();
+  // Create three promises
+  const promises = [createRandomPromise(1), createRandomPromise(2), createRandomPromise(3)];
 
-  // Function to create a promise
-  function createPromise(i) {
-    const delay = Math.floor(Math.random() * 1000) + 500; // Between 1 and 3 seconds
-    const promiseStartTime = Date.now();
+  const startTime = performance.now(); // Start time for total duration calculation
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const timeTaken = (Date.now() - promiseStartTime) / 1000; // In seconds
-        resolve({ name: "Promise " + i, timeTaken: timeTaken.toFixed(3) });
-      }, delay);
+  // Use Promise.all to wait for all promises to resolve
+  Promise.all(promises).then((results) => {
+    const endTime = performance.now(); // End time for total duration calculation
+    const totalDuration = ((endTime - startTime) / 1000).toFixed(3);
+
+    // Remove the loading row
+    table.deleteRow(0);
+
+    // Add rows for each promise result
+    results.forEach((result) => {
+      const row = table.insertRow();
+      const cell1 = row.insertCell(0);
+      const cell2 = row.insertCell(1);
+      cell1.textContent = result.index;
+      cell2.textContent = `${result.time} seconds`;
     });
-  }
 
-  // Create 3 promises
-  const promises = [];
-  for (let i = 1; i <= 3; i++) {
-    promises.push(createPromise(i));
-  }
+    // Add row for total duration
+    const totalRow = table.insertRow();
+    const totalCell1 = totalRow.insertCell(0);
+    const totalCell2 = totalRow.insertCell(1);
+    totalCell1.textContent = 'Total';
+    totalCell2.textContent = `${totalDuration} seconds`;
+  });
+}
 
-  // Wait for all promises to resolve
-  Promise.all(promises)
-    .then((results) => {
-      const endTime = Date.now();
-      const totalTime = (endTime - startTime) / 1000; // In seconds
-
-      // Clear the loading text
-document.getElementById("loadingRow").remove(); 
-		
-      // Sort results by promise name
-      results.sort((a, b) => a.name.localeCompare(b.name));
-
-      // Add rows for each promise
-      results.forEach((result) => {
-        const row = document.createElement("tr");
-
-        const nameCell = document.createElement("td");
-        nameCell.textContent = result.name;
-        row.appendChild(nameCell);
-
-        const timeCell = document.createElement("td");
-        timeCell.textContent = result.timeTaken;
-        row.appendChild(timeCell);
-
-        outputElement.appendChild(row);
-      });
-
-      // Add the total row
-      const totalRow = document.createElement("tr");
-
-      const totalNameCell = document.createElement("td");
-      totalNameCell.textContent = "Total";
-      totalRow.appendChild(totalNameCell);
-
-      const totalTimeCell = document.createElement("td");
-      totalTimeCell.textContent = totalTime.toFixed(3);
-      totalRow.appendChild(totalTimeCell);
-
-      outputElement.appendChild(totalRow);
-    })
-    .catch((error) => {
-      console.error("A promise was rejected: ", error);
-    });
-};
+// Call the function to handle promises
+handlePromises();
